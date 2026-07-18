@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<!--
+    DOCTYPE: Declaración del tipo de documento. Le indica al navegador que use HTML5.
+    Siempre va en la primera línea, antes del <html>. Sin esto algunos navegadores
+    entran en "modo compatibilidad" y renderizan la página de forma diferente.
+-->
+<html lang="en">
+<!--
+    <html>: elemento raíz que contiene toda la página.
+    lang="en": indica el idioma del contenido. Debería ser "es" para español,
+    pero se dejó "en". Es importante para accesibilidad (lectores de pantalla)
+    y para motores de búsqueda (SEO).
+-->
+
+<head>
+    <!--
+        <head>: sección de metadatos del documento. Nada de lo que está aquí
+        es visible directamente, pero es fundamental para el funcionamiento del sitio.
+    -->
+
+    <meta charset="UTF-8">
+    <!--
+        charset="UTF-8": define la codificación de caracteres del documento.
+        UTF-8 soporta todos los caracteres especiales: ñ, é, á, ü, ¿, etc.
+        Sin esto, los caracteres especiales aparecen como símbolos raros (ej: Ã©).
+    -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--
+        viewport: meta etiqueta ESENCIAL para que el diseño responsivo funcione.
+        Sin esto, los dispositivos móviles muestran la versión de escritorio en miniatura.
+        - width=device-width: el ancho de la página = el ancho real del dispositivo
+        - initial-scale=1.0: zoom inicial al 100% (sin acercamiento ni alejamiento)
+    -->
+
+    <link rel="stylesheet" href="build/css/app.css">
+    <!--
+        Enlaza el archivo CSS compilado. Gulp toma src/scss/app.scss,
+        compila todos los SCSS del proyecto y genera este archivo en build/css/.
+        El CSS va en el <head> para que los estilos se carguen antes que el contenido,
+        evitando el "destello de contenido sin estilo" (FOUC).
+    -->
+
+    <title>Festival de Música</title>
+    <!-- Texto que aparece en la pestaña del navegador y en los resultados de búsqueda -->
+
+    <!--
+        preconnect: establece una conexión anticipada con los servidores de Google Fonts
+        antes de que el navegador necesite descargar las fuentes.
+        Esto reduce el tiempo de carga de las tipografías.
+        crossorigin en el segundo preconnect es necesario porque gstatic.com
+        sirve recursos estáticos (fuentes) que requieren cabeceras CORS.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!--
+        Importa las fuentes tipográficas de Google Fonts.
+        - Montserrat: fuente principal del sitio (usada en body, definida en _variables.scss)
+        - Open Sans y PT Sans: incluidas pero no usadas en estilos actuales
+        Los rangos de peso (100..900) permiten usar cualquier grosor de la fuente.
+        display=swap: mientras carga la fuente, usa la fuente del sistema (mejor rendimiento).
+    -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ============================================================
+         HEADER — Barra de navegación principal
+         Contiene el título/logo del festival y los links de navegación.
+
+         COMPORTAMIENTO DINÁMICO (ver función navegacionFija en app.js):
+         JavaScript detecta el scroll del usuario. Cuando la sección
+         ".sobre-festival" sale completamente de la pantalla, JS agrega
+         la clase ".fixed" al header → CSS lo posiciona como fijo en la
+         parte superior (ver _header.scss).
+    ============================================================ -->
+    <header class="header">
+
+        <!--
+            .contenedor: clase de _globales.scss que centra el contenido
+            y limita su ancho a un máximo de 1200px.
+            .contenido-header: en tablet+ activa flexbox para poner
+            el título y el nav uno al lado del otro (ver _header.scss).
+        -->
+        <div class="contenedor contenido-header">
+            <h1>Music Festival</h1>
+
+            <!--
+                <nav>: elemento semántico de HTML5 para la navegación principal.
+                Usar <nav> en vez de <div> es mejor para accesibilidad y SEO:
+                los lectores de pantalla y buscadores saben que es un menú de navegación.
+
+                Los href="#id" son anclas: enlazan a secciones de la misma página.
+                JavaScript intercepta estos clicks para animar el scroll (ver scrollNav en app.js).
+
+                La clase ".active" la agrega/quita JavaScript para resaltar el link
+                de la sección que el usuario está viendo (ver resaltarEnlace en app.js).
+            -->
+            <nav class="navegacion-principal">
+                <a href="#lineup">Lineup</a>
+                <a href="#galeria">Galería</a>
+                <a href="#boletos">Boletos</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ============================================================
+         VIDEO HERO — Sección con video de fondo animado
+         Técnica de capas (de abajo hacia arriba):
+           1. <video>: el video que se reproduce en bucle
+           2. .overlay: capa con gradiente morado encima del video
+           3. .contenido-video: el texto (nombre y fecha del festival)
+         El overlay es necesario para que el texto blanco sea legible
+         sobre el video que puede tener partes claras o brillantes.
+         Ver estilos detallados en _video.scss.
+    ============================================================ -->
+    <div class="video">
+
+        <!--
+            .overlay: capa semitransparente con gradiente de color morado.
+            En CSS tiene position: absolute para superponerse al video.
+            El padre .video tiene position: relative para que funcione.
+        -->
+        <div class="overlay">
+            <div class="contenedor contenido-video">
+                <h2>Techno Festival</h2>
+                <p>Julio 2026, Colombia</p>
+            </div>
+        </div>
+
+        <!--
+            <video>: elemento HTML5 para reproducir video directamente en la página.
+            - autoplay: el video empieza a reproducirse automáticamente al cargar
+            - loop: cuando termina, vuelve a empezar (bucle infinito)
+            (Nota: los navegadores modernos requieren que el video tenga muted para
+            permitir autoplay. Si el video tuviera sonido, habría que agregar muted.)
+
+            Se proveen 3 formatos para máxima compatibilidad entre navegadores.
+            El navegador descarga y usa el PRIMER formato que puede reproducir:
+            - .mp4 (H.264): compatible con todos los navegadores modernos
+            - .ogv (Theora): para Firefox y navegadores más antiguos
+            - .webm (VP8/VP9): formato optimizado para web, menor tamaño de archivo
+        -->
+        <video autoplay loop muted>
+            <source src="video/dj.mp4" type="video/mp4">
+            <source src="video/dj.ogv" type="video/ogg">
+            <source src="video/dj.webm" type="video/webm">
+        </video>
+    </div>
+
+    <!-- ============================================================
+         SOBRE EL FESTIVAL — Sección informativa
+         Imagen del DJ a la izquierda + texto descriptivo a la derecha.
+         En móvil se apilan (imagen arriba, texto abajo).
+         En tablet+ van en dos columnas usando CSS Grid.
+
+         IMPORTANTE para el header sticky: JavaScript (función
+         navegacionFija) detecta cuando esta sección sale del viewport
+         para activar el header fijo. Es el "punto de activación".
+         Ver estilos en _festival.scss.
+    ============================================================ -->
+    <section class="sobre-festival">
+
+        <!-- Columna izquierda: imagen del DJ -->
+        <div class="imagen">
+            <img src="src/img/imagen_dj.jpg" alt="Sobre festival">
+            <!--
+                alt="Sobre festival": texto alternativo obligatorio en imágenes.
+                Se usa cuando la imagen no carga (muestra el texto en su lugar)
+                y para lectores de pantalla (accesibilidad para personas con
+                discapacidad visual).
+            -->
+        </div>
+
+        <!-- Columna derecha: título, fecha y descripción -->
+        <div class="contenido-festival">
+            <h2>Techno Festival</h2>
+            <p class="fecha">Julio 2026, Colombia</p>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veritatis ipsum itaque similique dolorum
+                mollitia quia debitis magnam dicta! Nesciunt maiores at voluptate consequuntur mollitia dignissimos.
+                Voluptates tenetur blanditiis esse numquam!</p>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         LINE UP — Cartelera de artistas por día y escenario
+         id="lineup": permite navegar aquí desde el link <a href="#lineup">.
+         Organizado por días (Viernes 21, Sábado 22) y escenarios (Techno, EDM).
+         La clase .bg-amarillo y .bg-verde definen el color de cada escenario.
+         Ver estilos en _lineup.scss.
+    ============================================================ -->
+    <section id="lineup" class="lineup">
+        <h3>Line Up</h3>
+
+        <!-- ── DÍA 1: Viernes 21 ── -->
+        <p class="dia">Viernes 21</p>
+
+        <!--
+            .escenarios-contenedor: div que agrupa los dos escenarios de un día.
+            En _lineup.scss: en tablet+ se convierte en CSS Grid de 2 columnas.
+        -->
+        <div class="escenarios-contenedor">
+
+            <!-- Escenario Techno con fondo amarillo -->
+            <div class="escenario bg-amarillo">
+                <p class="nombre-escenario">Techno</p>
+
+                <!--
+                    .calendario: lista de horarios y artistas.
+                    El tiempo (24:00 |) es texto del <li> y el nombre del artista
+                    va en <span>. Esto permite darles estilos diferentes:
+                    el horario en negrita (font-weight: 700) y el nombre en peso
+                    normal (font-weight: 400), creando jerarquía visual.
+                -->
+                <ul class="calendario">
+                    <li>
+                        24:00 | <span>Adam Beyer</span>
+                    </li>
+                    <li>
+                        22:00 | <span>Carl Cox</span>
+                    </li>
+                    <li>
+                        20:00 | <span>HI-LO</span>
+                    </li>
+                    <li>
+                        19:00 | <span>Amelie Lens</span>
+                    </li>
+                    <li>
+                        18:00 | <span>CamelPhat</span>
+                    </li>
+                    <li>
+                        17:00 | <span>ARTBAT</span>
+                    </li>
+                </ul>
+            </div> <!--.escenario-->
+
+            <!-- Escenario EDM con fondo verde -->
+            <div class="escenario bg-verde">
+                <p class="nombre-escenario">EDM</p>
+
+                <ul class="calendario">
+                    <li>
+                        24:00 | <span>David Guetta</span>
+                    </li>
+                    <li>
+                        22:00 | <span>Tïesto</span>
+                    </li>
+                    <li>
+                        20:00 | <span>Martin Garrix</span>
+                    </li>
+                    <li>
+                        19:00 | <span>Steve Aoki</span>
+                    </li>
+                    <li>
+                        18:00 | <span>Afrojack</span>
+                    </li>
+                    <li>
+                        17:00 | <span>Vintage Culture</span>
+                    </li>
+                </ul>
+            </div> <!--.escenario-->
+        </div> <!--.escenarios-contenedor -->
+
+
+        <!-- ── DÍA 2: Sábado 22 ── -->
+        <p class="dia">Sábado 22</p>
+
+        <!--
+            Este contenedor tiene AMBAS clases: .escenarios-contenedor y .contenedor.
+            .contenedor (de _globales.scss) centra y limita el ancho directamente en el HTML,
+            mientras que el primer div del día solo usaba @include m.contenedor desde CSS.
+            Ambas formas logran el mismo resultado visual.
+        -->
+        <div class="escenarios-contenedor contenedor">
+            <div class="escenario bg-verde">
+                <p class="nombre-escenario">Techno</p>
+
+                <ul class="calendario">
+                    <li>
+                        24:00 | <span>Reinier Zonneveld</span>
+                    </li>
+                    <li>
+                        22:00 | <span>Eric Prydz</span>
+                    </li>
+                    <li>
+                        20:00 | <span>Deadmau5</span>
+                    </li>
+                    <li>
+                        19:00 | <span>Joris Voorn</span>
+                    </li>
+                    <li>
+                        18:00 | <span>Nina Kraviz</span>
+                    </li>
+                    <li>
+                        17:00 | <span>Argy</span>
+                    </li>
+                </ul>
+            </div> <!--.escenario-->
+
+            <div class="escenario bg-amarillo">
+                <p class="nombre-escenario">EDM</p>
+
+                <ul class="calendario">
+                    <li>
+                        24:00 | <span>Armin Van Buuren</span>
+                    </li>
+                    <li>
+                        22:00 | <span>Calvin Harris</span>
+                    </li>
+                    <li>
+                        20:00 | <span>Hardwell</span>
+                    </li>
+                    <li>
+                        19:00 | <span>Above & Beyond</span>
+                    </li>
+                    <li>
+                        18:00 | <span>Diplo</span>
+                    </li>
+                    <li>
+                        17:00 | <span>Steve Angello</span>
+                    </li>
+                </ul>
+            </div> <!--.escenario-->
+        </div> <!--.escenarios-contenedor -->
+    </section>
+
+    <!-- ============================================================
+         GALERÍA — Fotos del festival con lightbox
+         id="galeria": permite la navegación desde el nav con #galeria.
+
+         IMPORTANTE: el div .galeria-imagenes está vacío a propósito.
+         JavaScript (función crearGaleria en app.js) genera las 16 imágenes
+         dinámicamente y las inserta aquí al cargar la página.
+         Cada imagen creada tiene un onclick que abre el modal lightbox.
+         Ver estilos en _galeria.scss.
+    ============================================================ -->
+    <section id="galeria" class="galeria">
+
+        <h3>Galería</h3>
+
+        <!--
+            Este div está VACÍO en el HTML. JavaScript lo llena con <img> creados
+            con document.createElement('IMG') y appendChild().
+            CSS Grid en _galeria.scss organiza las imágenes en columnas responsive.
+        -->
+        <div class="galeria-imagenes"></div>
+
+    </section>
+
+    <!-- ============================================================
+         BOLETOS — Precios y tipos de pase
+         id="boletos": permite la navegación desde el nav con #boletos.
+         Dos tarjetas (Pase 1 Día / Pase 2 Días) con estructura BEM.
+         BEM = Block Element Modifier: .pase (bloque), .pase-nombre,
+         .pase-header, .pase-body, .pase-footer (elementos).
+         Efecto hover: las tarjetas "crecen" con transform: scale(1.1).
+         Ver estilos en _boletos.scss.
+    ============================================================ -->
+    <section id="boletos" class="contenedor-boletos">
+        <h3>Boletos</h3>
+
+        <!-- .boletos: en tablet+ es un grid de 2 columnas (una tarjeta por columna) -->
+        <div class="boletos">
+
+            <!-- ── TARJETA: Pase 1 Día ── -->
+            <div class="pase">
+                <p class="pase-nombre">Pase 1 Día</p>
+
+                <!--
+                    <header> dentro de una tarjeta: HTML5 permite usar <header> y <footer>
+                    en cualquier sección de la página, no solo en la cabecera principal.
+                    Aquí representa el encabezado de la tarjeta de precio.
+                -->
+                <header class="pase-header">
+                    <p>Incluye</p>
+                </header>
+
+                <div class="pase-body">
+                    <ul>
+                        <li>Acceso a ambos escenarios</li>
+                        <li>Bebida Ilimitada</li>
+                        <li>Camisa / Pulsera del Evento</li>
+                    </ul>
+                </div>
+
+                <!--
+                    .pase-footer: muestra el precio.
+                    Aunque el precio es un <p> (párrafo), CSS le da apariencia de botón:
+                    background-color, border-radius y cursor: pointer.
+                    Es un patrón común: usar estilos CSS para que elementos semánticos
+                    parezcan botones sin necesidad de usar <button>.
+                -->
+                <footer class="pase-footer">
+                    <p>$100</p>
+                </footer>
+            </div>
+
+            <!-- ── TARJETA: Pase 2 Días (incluye Acceso VIP adicional) ── -->
+            <div class="pase">
+                <p class="pase-nombre">Pase 2 Días</p>
+                <header class="pase-header">
+                    <p>Incluye</p>
+                </header>
+                <div class="pase-body">
+                    <ul>
+                        <li>Acceso a ambos escenarios</li>
+                        <li>Bebida Ilimitada</li>
+                        <li>Camisa / Pulsera del Evento</li>
+                        <li>Acceso VIP</li> <!-- Beneficio adicional respecto al Pase 1 Día -->
+                    </ul>
+                </div>
+                <footer class="pase-footer">
+                    <p>$180</p>
+                </footer>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ============================================================
+         FOOTER — Pie de página
+         Elemento semántico <footer>: indica el pie de la página.
+         Simple: fondo rosa y un párrafo centrado en blanco.
+         Ver estilos en _footer.scss.
+    ============================================================ -->
+    <footer class="footer">
+        <p>Technno festival. Todos los derechos reservados</p>
+    </footer>
+
+
+</body>
+
+<!--
+    El <script> se coloca AL FINAL, después del </body>.
+    Esto es importante por dos razones:
+    1. RENDIMIENTO: el navegador no "bloquea" la carga del HTML para descargar
+       el script. La página se muestra antes y el usuario la ve más rápido.
+    2. DOM DISPONIBLE: cuando el script se ejecuta, todos los elementos HTML
+       ya existen en el DOM, así querySelector('.header') los puede encontrar.
+
+    Nota: app.js también usa DOMContentLoaded como segunda capa de seguridad,
+    pero colocar el script al final del body es suficiente en la mayoría de casos.
+-->
+<script src="src/js/app.js"></script>
+
+</html>

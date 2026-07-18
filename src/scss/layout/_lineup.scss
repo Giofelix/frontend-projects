@@ -1,0 +1,98 @@
+// ============================================================
+// layout/_lineup.scss — Sección de artistas (Line Up)
+// ============================================================
+// Lista de artistas organizados por día y por tipo de música.
+// Cada escenario es una tarjeta de color con lista de horarios.
+//
+// Conceptos nuevos en este archivo:
+// - color.scale(): función de Sass para aclarar/oscurecer un color
+// - :nth-child(odd): selector CSS para filas alternas de la lista
+// - text-transform: uppercase: texto en mayúsculas via CSS (sin cambiar el HTML)
+// ============================================================
+
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+@use "sass:color";
+// Módulo de Sass para manipular colores programáticamente.
+// Permite aclarar, oscurecer, cambiar saturación, etc.
+
+.lineup {
+    background-color: v.$rosa; // Toda la sección tiene fondo rosa
+
+    // Anidamiento SCSS: aplica estilos a dos selectores al mismo tiempo.
+    // Compila como: ".lineup h3 { ... } .lineup .dia { ... }"
+    h3,
+    .dia {
+        text-align: center;
+        color: v.$blanco; // Texto blanco sobre el fondo rosa
+    }
+
+    .dia {
+        font-size: 3rem;          // 30px para el texto del día (Viernes 21, Sábado 22)
+        text-transform: uppercase; // Convierte "Viernes 21" a "VIERNES 21" vía CSS
+    }
+}
+
+// Contenedor que agrupa los dos escenarios de cada día
+.escenarios-contenedor {
+    @include m.contenedor; // Centra y limita el ancho (max-width: 1200px)
+
+    @include m.tablet {
+        @include m.grid(2, 5rem);
+        // En tablet+: grid de 2 columnas con 50px de separación.
+        // Una columna para Techno y otra para EDM.
+    }
+}
+
+// Cada tarjeta individual de escenario (Techno / EDM)
+.escenario {
+    padding: 2rem; // 20px de relleno interior
+
+    .nombre-escenario {
+        font-size: 3rem;           // 30px
+        font-weight: 900;          // Negrita máxima
+        text-transform: uppercase; // "Techno" → "TECHNO"
+        text-align: center;
+    }
+}
+
+// La lista de horarios y artistas dentro de cada escenario
+.calendario {
+    @include m.resetear-lista();
+    // Quita: margin, padding y list-style (viñetas/puntos) de la <ul>
+
+    li {
+        padding: 2.5rem;  // 25px de relleno: da altura a cada fila de la lista
+        font-weight: 700; // El horario (24:00 |) en negrita
+
+        span {
+            font-weight: 400;
+            // El nombre del artista en peso normal (400).
+            // El contraste visual entre el horario en negrita y el nombre normal
+            // hace que sea fácil escanear la lista rápidamente.
+        }
+    }
+}
+
+// ─── CLASES DE COLOR PARA LOS ESCENARIOS ─────────────────────
+// color.scale($color, $lightness: N%): ajusta la luminosidad un porcentaje.
+// Valores positivos aclaran, negativos oscurecen.
+// Aquí se usa para crear un efecto "zebra" (filas alternas levemente diferentes).
+
+.bg-amarillo {
+    background-color: v.$amarillo;
+
+    // :nth-child(odd): selecciona elementos en posición IMPAR (1°, 3°, 5°...)
+    // Los elementos pares quedan con el amarillo base; los impares, levemente más claro.
+    li:nth-child(odd) {
+        background-color: color.scale(v.$amarillo, $lightness: 5%); // Amarillo aclarado 5%
+    }
+}
+
+.bg-verde {
+    background-color: v.$verde;
+
+    li:nth-child(odd) {
+        background-color: color.scale(v.$verde, $lightness: 5%); // Verde aclarado 5%
+    }
+}

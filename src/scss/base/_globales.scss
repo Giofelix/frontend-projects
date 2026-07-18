@@ -1,0 +1,112 @@
+// ============================================================
+// base/_globales.scss — Estilos base globales del proyecto
+// ============================================================
+// Se aplican a elementos HTML genéricos (html, body, h1, img...).
+// Se cargan después de normalize.css para personalizar y ampliar
+// los estilos base que el reset dejó en blanco.
+//
+// TRUCO CLAVE DE ESTE ARCHIVO: font-size: 62.5% en html hace que
+// 1rem = 10px (en vez de 16px), simplificando todos los cálculos:
+//   2rem = 20px | 3rem = 30px | 4.6rem = 46px | 10rem = 100px
+// ============================================================
+
+@use 'variables' as v;
+// Importa _variables.scss con el alias "v".
+// Permite usar las variables del proyecto como: v.$verde, v.$negro, etc.
+
+html {
+    font-size: 62.5%;
+    // TRUCO: el tamaño por defecto del navegador es 16px.
+    // 62.5% de 16px = 10px → ahora 1rem equivale a 10px.
+    // Esto hace que los tamaños en rem sean intuitivos de calcular.
+
+    box-sizing: border-box;
+    // Cambia el modelo de caja estándar: el padding y el border se incluyen
+    // DENTRO del ancho y alto declarado del elemento.
+    // Ejemplo sin border-box: div de width:200px + padding:20px = ocupa 240px.
+    // Ejemplo CON border-box: div de width:200px + padding:20px = sigue siendo 200px.
+
+    scroll-padding-top: 0rem;
+    // Espacio extra que se respeta al hacer scroll a una ancla (#id).
+    // Útil si tienes un header fijo que taparia el inicio de la sección.
+}
+
+// Hereda box-sizing a TODOS los elementos de la página.
+// El asterisco (*) selecciona todos los elementos.
+// *:before y *:after cubren los pseudoelementos (::before y ::after).
+*,
+*:before,
+*:after {
+    box-sizing: inherit; // Heredan el box-sizing definido en html
+}
+
+body {
+    font-family: v.$fuente_principal; // Aplica Montserrat a toda la página
+    font-optical-sizing: auto;        // Permite al navegador ajustar la tipografía ópticamente según el tamaño
+    font-style: normal;
+    color: v.$negro;                  // Color de texto por defecto: negro
+    font-size: 2rem;                  // Tamaño base de texto: 20px (2 × 10px gracias al truco del 62.5%)
+
+    // El símbolo "&" en SCSS referencia el selector padre.
+    // "&.overflow-hidden" compila como "body.overflow-hidden".
+    // Esta clase la agrega y quita JavaScript al abrir y cerrar el modal lightbox.
+    &.overflow-hidden {
+        overflow: hidden;
+        // overflow: hidden impide que el usuario haga scroll en la página.
+        // Se usa para "bloquear" el fondo mientras el modal está abierto.
+    }
+}
+
+p {
+    color: v.$negro;
+    line-height: 1.5; // Interlineado: cada línea de texto tiene 1.5 veces la altura de la fuente.
+                      // Mejora la legibilidad. Sin esto el texto quedaría muy comprimido.
+}
+
+// Clase utilitaria reutilizable para centrar y limitar el ancho del contenido.
+// Se aplica en el HTML como: <div class="contenedor">
+.contenedor {
+    width: 95%;        // El contenido ocupa el 95% del ancho disponible
+    max-width: 120rem; // Pero nunca supera los 1200px de ancho
+    margin: 0 auto;    // Centrado horizontal: margen automático a izquierda y derecha
+}
+
+a {
+    text-decoration: none; // Elimina el subrayado que los navegadores ponen a <a> por defecto
+}
+
+// Estilos base para todos los títulos
+h1,
+h2,
+h3 {
+    margin: 0 0 5rem 0;
+    // Atajo de margin (sentido horario): arriba derecha abajo izquierda
+    // Resultado: sin margen arriba ni a los lados, 50px de margen abajo
+    font-weight: 900; // Negrita máxima (también llamada "Black" o "ExtraBlack")
+}
+
+h1 { font-size: 4rem; }   // 40px — título principal del header
+h2 { font-size: 4.6rem; } // 46px — títulos de sección grandes
+
+h3 {
+    font-size: 6rem;    // 60px — títulos de sección (Line Up, Galería, Boletos)
+    text-align: center; // Los h3 siempre están centrados en este diseño
+}
+
+// Imágenes responsivas por defecto (se adaptan a su contenedor)
+img {
+    max-width: 100%; // La imagen NUNCA supera el ancho de su contenedor padre
+    width: 100%;     // Ocupa todo el ancho disponible dentro del contenedor
+    height: auto;    // La altura se ajusta proporcional al ancho (sin distorsión)
+    display: block;
+    // Por defecto las imágenes son "inline", lo que genera un espacio en blanco
+    // debajo de ellas (espacio de línea base del texto). "block" elimina ese espacio.
+}
+
+// Aplica padding vertical a todas las <section> que son hijas directas del body
+body > section {
+    padding: 10rem 0;
+    // "body > section": el selector ">" selecciona solo hijos DIRECTOS
+    // (no <section> anidadas dentro de otras secciones).
+    // 10rem = 100px de espacio arriba y abajo de cada sección principal de la página.
+}

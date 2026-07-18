@@ -1,0 +1,17 @@
+// ============================================================
+// base/_index.scss — Índice del módulo "base"
+// ============================================================
+// Archivo de barril (barrel file): su único propósito es reunir
+// y re-exportar todos los archivos de la carpeta base/.
+//
+// Cuando app.scss hace @forward 'base', en realidad recibe
+// automáticamente todo lo que está listado aquí.
+//
+// EL ORDEN IMPORTA:
+// - normalize va primero: resetea estilos antes de aplicar los propios
+// - variables va antes que globales: globales las necesita para usarlas
+// ============================================================
+
+@forward 'normalize';  // Reset cross-browser (biblioteca externa, no modificar)
+@forward 'variables';  // Variables del proyecto: colores, fuente, breakpoints
+@forward 'globales';   // Estilos base: body, contenedor, h1-h3, imágenes, etc.

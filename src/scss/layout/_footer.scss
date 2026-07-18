@@ -1,0 +1,21 @@
+// ============================================================
+// layout/_footer.scss — Pie de página
+// ============================================================
+// Footer simple con fondo rosa y un párrafo de texto centrado.
+// No necesita importar mixins porque no usa media queries ni grid.
+// ============================================================
+
+@use 'base/variables' as v;
+// Solo necesitamos las variables (colores) para este archivo
+
+.footer {
+    background-color: v.$rosa; // Fondo rosa, mismo tono que el lineup y el pase-header
+    padding: 2rem 0;           // 20px arriba y abajo, sin padding a los lados
+
+    // Anidamiento SCSS: ".footer p" en CSS
+    p {
+        margin: 0;          // Quita el margen por defecto de los <p>
+        text-align: center; // Texto centrado horizontalmente
+        color: v.$blanco;   // Texto blanco sobre fondo rosa
+    }
+}

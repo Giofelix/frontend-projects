@@ -1,0 +1,121 @@
+// ============================================================
+// layout/_boletos.scss — Sección de precios y tipos de pase
+// ============================================================
+// Dos tarjetas de precio (Pase 1 Día / Pase 2 Días) con estructura BEM.
+//
+// BEM (Block Element Modifier) es una convención de nombres en CSS:
+//   Bloque:   .pase               → el componente principal
+//   Elemento: .pase-nombre        → parte del componente (con guion)
+//             .pase-header
+//             .pase-body
+//             .pase-footer
+//
+// En SCSS, "&-nombre" dentro de ".pase { }" compila como ".pase-nombre",
+// lo que ahorra escribir el nombre del bloque repetidamente.
+//
+// Efecto especial: transform: scale(1.1) en hover da la ilusión
+// de que la tarjeta "se levanta" cuando el cursor pasa encima.
+// ============================================================
+
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+@use "sass:color"; // Para oscurecer el morado en el estado hover del precio
+
+.contenedor-boletos {
+    background-color: v.$verde; // Toda la sección tiene fondo verde
+
+    h3 {
+        color: v.$blanco; // El título "Boletos" en blanco sobre fondo verde
+    }
+
+    .boletos {
+        @include m.contenedor(); // Centra y limita el ancho del contenido
+
+        @include m.tablet {
+            @include m.grid(2, 5rem);
+            // En tablet+: las dos tarjetas van en fila (una al lado de la otra)
+        }
+    }
+}
+
+// ─── TARJETA DE PASE ─────────────────────────────────────────
+.pase {
+    transition: transform .3s ease-in-out;
+    // "transition" hace que los cambios de propiedades CSS sean animados en vez de instantáneos.
+    // Aquí: cuando la propiedad "transform" cambie (por el hover), la animación durará 0.3 segundos
+    // con una curva "ease-in-out" (empieza lento, se acelera, termina lento).
+
+    &:hover {
+        transform: scale(1.1);
+        // "scale(1.1)": escala el elemento al 110% de su tamaño original.
+        // Crea el efecto de que la tarjeta "crece" al pasar el mouse.
+        // La transición de arriba hace que este cambio sea suave y no brusco.
+    }
+
+    // "&-nombre" compila como ".pase-nombre" → nomenclatura BEM (elemento)
+    &-nombre {
+        font-size: 3.6rem; // 36px
+        font-weight: 700;
+        text-align: center;
+        color: v.$blanco;
+    }
+
+    // Aplica los mismos estilos a .pase-header y .pase-footer al mismo tiempo
+    &-header,
+    &-footer {
+        padding: .5rem;
+
+        p {
+            text-align: center;
+            color: v.$blanco;
+            margin: 0; // Quita el margen por defecto del <p>
+        }
+    }
+
+    // Solo para .pase-header (encabezado de la tarjeta: "INCLUYE")
+    &-header {
+        background-color: v.$rosa;
+
+        p {
+            text-transform: uppercase; // "Incluye" → "INCLUYE"
+            font-size: 2.2rem;         // 22px
+            padding: 1rem 0;
+        }
+    }
+
+    // Cuerpo de la tarjeta: lista de beneficios del pase
+    &-body {
+        background-color: v.$blanco;
+
+        ul {
+            @include m.resetear-lista(); // Elimina márgenes, padding y viñetas de la lista
+
+            li {
+                padding: 2rem;                    // 20px de relleno para cada ítem
+                border-bottom: 1px solid v.$verde; // Línea separadora verde entre cada beneficio
+            }
+        }
+    }
+
+    // Pie de la tarjeta: muestra el precio como si fuera un botón
+    &-footer {
+        background-color: v.$blanco;
+        padding: 3rem; // 30px de relleno para dar espacio al "botón" de precio
+
+        p {
+            font-size: 2.8rem;            // 28px — precio grande y visible
+            font-weight: 900;             // Negrita máxima
+            background-color: v.$morado; // Fondo morado para simular un botón
+            padding: 1rem 0;
+            border-radius: 1rem;          // Esquinas redondeadas: apariencia de botón
+            cursor: pointer;              // Cursor de "manito" (aunque sea un <p>, se ve como botón)
+
+            &:hover {
+                background-color: color.scale(v.$morado, $lightness: -20%);
+                // color.scale con $lightness: -20% oscurece el morado un 20% en hover
+                // Feedback visual: el "botón" se oscurece al pasar el mouse
+                transition: background-color .5s ease-in-out; // Suaviza el cambio de color
+            }
+        }
+    }
+}

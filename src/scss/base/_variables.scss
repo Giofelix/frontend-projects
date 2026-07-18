@@ -1,0 +1,38 @@
+// ============================================================
+// base/_variables.scss — Variables globales del proyecto
+// ============================================================
+// Las variables en SCSS empiezan con "$" y guardan valores
+// que se reutilizan en toda la hoja de estilos.
+//
+// VENTAJA CLAVE: si necesitas cambiar un color o un breakpoint,
+// solo lo cambias aquí y se actualiza en TODO el proyecto
+// automáticamente. No tienes que buscarlo en cada archivo.
+//
+// Para usar estas variables en otro archivo SCSS debes importarlas:
+//   @use 'base/variables' as v;
+// Luego las usas como: v.$verde, v.$tablet, etc.
+// ============================================================
+
+// --- TIPOGRAFÍA ---
+// Fuente importada desde Google Fonts en el <head> del index.html.
+// "sans-serif" es la fuente de reserva si Montserrat no logra cargar.
+$fuente_principal: "Montserrat", sans-serif;
+
+// --- PALETA DE COLORES ---
+// Convención: nombres descriptivos del color para facilitar su uso.
+$verde:    #4CB8B3;  // Color primario: header, sección boletos, bordes de lista
+$rosa:     #F53756;  // Acento fuerte: footer, lineup, encabezado del pase
+$amarillo: #fdda00;  // Acento secundario: sombra del header fijo, fondo de escenarios
+$morado:   #752F97;  // Overlay del video y botón de precio en boletos
+$negro:    #000000;  // Color de texto general en todo el sitio
+$blanco:   #FFFFFF;  // Texto sobre fondos oscuros (header, footer, lineup)
+
+// --- BREAKPOINTS PARA RESPONSIVE DESIGN ---
+// Un breakpoint es el ancho mínimo de pantalla donde el layout "cambia".
+// El diseño es "mobile-first": los estilos base son para móvil,
+// y los mixins de _mixins.scss agregan estilos para pantallas más grandes
+// usando min-width (es decir, "a partir de este ancho, aplica esto").
+$telefono : 480px;  // Teléfonos en horizontal y dispositivos pequeños
+$tablet:    768px;  // Tablets y teléfonos grandes
+$desktop:   1200px; // Pantallas de escritorio normales
+$desktopXL: 1400px; // Pantallas muy anchas (monitores grandes)

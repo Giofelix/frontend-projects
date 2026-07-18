@@ -1,0 +1,19 @@
+// ============================================================
+// app.scss — Punto de entrada principal de los estilos SCSS
+// ============================================================
+// Este archivo NO contiene estilos directamente.
+// Su único rol es actuar como "ensamblador": usa @forward para
+// exponer los dos módulos del proyecto hacia el exterior.
+//
+// Cuando Gulp ejecuta la tarea "css", este es el archivo de entrada.
+// SCSS sigue la cadena de @forward y termina generando un único
+// archivo CSS compilado: build/css/app.css
+// ============================================================
+
+// Publica todo el contenido de src/scss/base/_index.scss
+// (que a su vez incluye: normalize, variables y globales)
+@forward 'base';
+
+// Publica todo el contenido de src/scss/layout/_index.scss
+// (que incluye los estilos de cada sección visual de la página)
+@forward 'layout';

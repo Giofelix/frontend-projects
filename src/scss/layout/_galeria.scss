@@ -1,0 +1,122 @@
+// ============================================================
+// layout/_galeria.scss — Galería de fotos con lightbox modal
+// ============================================================
+// La galería usa CSS Grid con responsive progresivo:
+//   Móvil: 1 col → Teléfono (480px): 2 col → Tablet (768px): 3 col → Desktop (1200px): 4 col
+//
+// Las imágenes NO están en el HTML: JavaScript las crea dinámicamente
+// y las inserta en el div .galeria-imagenes (ver crearGaleria en app.js).
+//
+// Al hacer clic en una imagen, JS crea un modal (lightbox) con la imagen
+// en grande. CSS maneja la animación de entrada/salida con @keyframes.
+// ============================================================
+
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+@use "sass:color";
+
+// Sección contenedora de toda la galería
+.galeria {
+    @include m.contenedor; // Centra y limita el ancho
+
+    // BEM (Block Element Modifier) en SCSS:
+    // "&-imagenes" dentro de ".galeria" compila como ".galeria-imagenes"
+    // BEM es una convención de nombres: Bloque-Elemento--Modificador
+    &-imagenes {
+
+        // Responsive progresivo: el grid cambia de columnas según el tamaño de pantalla
+        @include m.grid(1, 2rem); // Por defecto (móvil): 1 columna, 20px de gap entre imágenes
+
+        @include m.telefono {
+            @include m.grid(2, 2rem); // ≥ 480px: 2 columnas
+        }
+
+        @include m.tablet {
+            @include m.grid(3, 2rem); // ≥ 768px: 3 columnas
+        }
+
+        @include m.desktop {
+            @include m.grid(4, 2rem); // ≥ 1200px: 4 columnas
+        }
+
+        img {
+            height: 20rem;     // Altura fija: 200px para todas las imágenes de la galería
+            object-fit: cover;
+            // object-fit: cover hace que la imagen recorte y cubra su contenedor
+            // manteniendo sus proporciones originales (sin distorsión).
+            // Es como "background-size: cover" pero para el elemento <img>.
+        }
+    }
+}
+
+// ─── MODAL (LIGHTBOX) ─────────────────────────────────────────
+// El modal es creado completamente por JavaScript (no existe en el HTML inicial).
+// Aparece cuando el usuario hace clic en una imagen de la galería.
+
+.modal {
+    position: fixed;
+    // position: fixed posiciona el elemento relativo al VIEWPORT (la ventana del navegador),
+    // no al documento. El modal permanece en pantalla aunque el usuario haga scroll.
+
+    inset: 0;
+    // Atajo de CSS: equivale a top:0; right:0; bottom:0; left:0;
+    // El modal cubre TODA la pantalla.
+
+    background-color: rgb(v.$negro, .5);
+    // Fondo negro con 50% de opacidad (semi-transparente).
+    // El contenido de la página se ve detrás del modal, oscurecido.
+
+    display: grid;
+    place-items: center;
+    // "place-items: center" en grid centra los elementos hijos perfectamente
+    // tanto horizontal como verticalmente. Forma más simple de centrar en CSS.
+
+    animation: fadeIn ease-in 0.5s;
+    // Al crearse el modal, se ejecuta la animación "fadeIn":
+    // aparece gradualmente en 0.5 segundos con curva ease-in.
+
+    // Cuando JavaScript agrega la clase .fade-out (al cerrar el modal),
+    // se activa la animación de desaparición
+    &.fade-out {
+        animation: fadeOut ease-in 0.5s;
+    }
+
+    img {
+        max-width: 100rem; // La imagen en el modal no supera los 1000px de ancho
+    }
+}
+
+// Botón para cerrar el modal
+.btn-cerrar {
+    width: 10rem;         // 100px de ancho
+    height: 4rem;         // 40px de alto
+    border-radius: 1rem;  // Esquinas redondeadas
+    color: v.$blanco;
+    font-weight: 700;
+    border-color: v.$blanco;
+    background-color: v.$rosa;
+    display: grid;
+    place-items: center; // Centra el texto "Cerrar" dentro del botón
+    cursor: pointer;     // El cursor cambia a "manito" al pasar sobre el botón
+
+    &:hover {
+        background-color: v.$amarillo; // En hover: fondo cambia a amarillo
+        border-color: v.$negro;
+        color: v.$negro;
+    }
+}
+
+// ─── ANIMACIONES CSS ──────────────────────────────────────────
+// @keyframes define una animación dándole un nombre y describiendo
+// cómo cambian las propiedades CSS a lo largo del tiempo (0% = inicio, 100% = fin).
+// Se conecta con elementos mediante la propiedad "animation: nombreAnimacion".
+
+@keyframes fadeIn {
+    0%   { opacity: 0; } // Inicio: completamente transparente (invisible)
+    100% { opacity: 1; } // Fin: completamente visible
+}
+
+@keyframes fadeOut {
+    0%   { opacity: 1; } // Inicio: completamente visible
+    100% { opacity: 0; } // Fin: completamente transparente (invisible)
+}

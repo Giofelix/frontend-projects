@@ -1,0 +1,44 @@
+// ============================================================
+// layout/_festival.scss — Sección "Sobre el Festival"
+// ============================================================
+// Sección con una imagen del DJ a la izquierda y texto a la derecha.
+// En móvil los elementos se apilan verticalmente (CSS Grid de 1 col).
+// En tablet+ van en dos columnas iguales usando CSS Grid (2 cols).
+//
+// Concepto importante: @include m.contenedor dentro de un selector
+// SCSS inserta las propiedades del mixin directamente en ese selector,
+// sin necesidad de agregar la clase .contenedor en el HTML.
+// ============================================================
+
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.sobre-festival {
+    @include m.contenedor;
+    // Inserta: width: 95%; max-width: 120rem; margin: 0 auto;
+    // Esto centra la sección y limita su ancho, igual que la clase .contenedor del HTML,
+    // pero aplicado directamente desde CSS sin modificar el HTML.
+
+    @include m.tablet {
+        @include m.grid(2, 5rem);
+        // En tablet+ (≥768px): crea un grid de 2 columnas iguales con 50px de separación.
+        // La imagen ocupa automáticamente la columna izquierda
+        // y el texto ocupa la columna derecha (orden del HTML).
+    }
+}
+
+.contenido-festival {
+    margin-top: 5rem;
+    // En móvil (1 columna), el texto queda debajo de la imagen.
+    // Este margen crea separación entre ambos cuando están apilados verticalmente.
+    // En tablet+ (2 columnas) el gap del grid ya maneja el espacio entre columnas.
+
+    h2 {
+        margin-bottom: 2rem; // 20px de espacio entre el título y el párrafo de texto
+    }
+
+    .fecha {
+        color: v.$verde;  // La fecha del festival en color verde del tema
+        font-weight: 700; // Negrita para que la fecha destaque del texto descriptivo
+    }
+}

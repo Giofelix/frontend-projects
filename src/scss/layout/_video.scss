@@ -1,0 +1,89 @@
+// ============================================================
+// layout/_video.scss — Sección hero con video de fondo
+// ============================================================
+// Esta sección usa un <video> HTML5 como fondo animado.
+// La técnica de capas es:
+//   1. .video → contenedor con position: relative (establece el contexto)
+//   2. <video> → el video en sí, ocupa el espacio del contenedor
+//   3. .overlay → capa con gradiente encima del video (position: absolute)
+//   4. .contenido-video → el texto encima del overlay (z-index alto)
+//
+// Sin el overlay, el texto blanco sería ilegible sobre el video.
+// ============================================================
+
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+@use "sass:color";
+// "sass:color" es un módulo incorporado de Sass con funciones para
+// manipular colores: aclarar, oscurecer, cambiar tono, saturación, etc.
+// Se usa más abajo con color.scale() para oscurecer el color morado.
+
+.video {
+    position: relative;
+    // position: relative en el padre crea un "contexto de posicionamiento".
+    // Los hijos con position: absolute se ubican relativo a este elemento,
+    // no relativo a toda la página.
+
+    min-height: 50rem; // Altura mínima 500px (para que se vea aunque el video no cargue)
+    max-height: 70rem; // Altura máxima 700px (limita cuánto espacio toma la sección)
+    overflow: hidden;  // Oculta cualquier parte del video que sobresalga del contenedor
+
+    // El overlay: capa semitransparente con gradiente encima del video
+    .overlay {
+        position: absolute;
+        // position: absolute saca el elemento del flujo normal y lo posiciona
+        // exactamente donde le indiques, relativo al padre con position: relative.
+
+        background: linear-gradient(270deg,
+                rgba(v.$morado, 10%),
+                color.scale(v.$morado, $lightness: -20%));
+        // linear-gradient: gradiente de color.
+        // 270deg: dirección de derecha a izquierda.
+        // Lado derecho: morado muy translúcido (10% de opacidad)
+        // Lado izquierdo: morado oscurecido un 20% con color.scale()
+
+        inset: 0;
+        // "inset" es un atajo moderno equivalente a: top:0; right:0; bottom:0; left:0;
+        // Hace que el overlay cubra 100% del padre (.video).
+
+        display: flex;
+        align-items: center; // Centra el .contenido-video verticalmente dentro del overlay
+    }
+
+    video {
+        display: block; // Elimina el espacio extra que generan los elementos inline (como las imágenes)
+        width: auto;    // En móvil el video mantiene su ancho natural (no se estira)
+
+        @include m.desktop {
+            width: 100%; // En desktop el video se estira para cubrir todo el ancho de la sección
+        }
+    }
+}
+
+// El texto que aparece encima del overlay (nombre del festival y fecha)
+.contenido-video {
+    z-index: 10;
+    // z-index controla el orden de "apilamiento" de elementos que se superponen.
+    // Un valor más alto = más al frente. El video y el overlay están en z-index auto (0),
+    // así que con z-index: 10 este contenido aparece encima de todos ellos.
+
+    h2 {
+        color: v.$blanco;
+        font-size: 7rem; // 70px — título grande tipo "hero" para impacto visual
+        margin: 0;
+    }
+
+    p {
+        background-color: v.$rosa;
+        display: inline-block;
+        // "inline-block": el elemento solo ocupa el ancho de su contenido
+        // (no se extiende al 100% del ancho como un bloque normal).
+        // Así el fondo rosa solo cubre el texto, no toda la línea.
+
+        padding: 1rem 2rem;   // 10px arriba/abajo, 20px izquierda/derecha
+        color: v.$blanco;
+        font-size: 2.4rem;    // 24px
+        font-weight: 700;     // Negrita
+        margin: 0;
+    }
+}

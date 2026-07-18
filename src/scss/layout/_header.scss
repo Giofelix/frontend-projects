@@ -1,0 +1,90 @@
+// ============================================================
+// layout/_header.scss — Estilos de la cabecera de navegación
+// ============================================================
+// El header contiene el logo/título (h1) y los links de navegación.
+//
+// COMPORTAMIENTO ESPECIAL (header sticky):
+// En estado normal el header está dentro del flujo de la página.
+// JavaScript (función navegacionFija en app.js) detecta cuando el
+// usuario hace scroll más allá de la sección "sobre-festival" y
+// agrega la clase ".fixed" al header, que lo posiciona fijo arriba.
+// Al volver a subir, quita ".fixed" y el header vuelve al flujo normal.
+// ============================================================
+
+// @use importa módulos SCSS con un alias para acceder a sus miembros.
+// "as v" → las variables se acceden como v.$verde, v.$amarillo, v.$blanco, etc.
+// "as m" → los mixins se acceden como m.tablet, m.grid, m.contenedor, etc.
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+.header {
+    background-color: v.$verde; // Fondo verde del header
+
+    // @include m.tablet: todo lo que está dentro de estas llaves
+    // solo se aplica en pantallas de 768px o más de ancho.
+    // El header sticky solo se activa en tablet/desktop porque en móvil
+    // el header ocupa más espacio y quedaría poco espacio para el contenido.
+    @include m.tablet {
+
+        // La clase ".fixed" la agrega JavaScript vía classList.add('fixed').
+        // El "&" referencia el selector padre (.header), así que
+        // "&.fixed" compila como ".header.fixed"
+        &.fixed {
+            position: fixed; // Saca el elemento del flujo normal del documento
+            left: 0;         // Pegado al borde izquierdo
+            top: 0;          // Pegado al borde superior de la pantalla
+            width: 100%;     // Ocupa todo el ancho de la ventana
+            box-shadow: .1rem .2rem .3rem v.$amarillo;
+            // Sombra amarilla debajo del header para indicar visualmente que "flota"
+        }
+    }
+
+    // ".contenido-header" es el div interno con la clase contenedor
+    // que alinea el título y la navegación
+    .contenido-header {
+        padding: 2rem; // 20px de relleno interior en todos los lados
+
+        // En tablets y pantallas más grandes: título y nav en una fila
+        @include m.tablet {
+            display: flex;                   // Activa Flexbox
+            justify-content: space-between; // Título a la izquierda, nav a la derecha
+            align-items: center;            // Ambos alineados verticalmente al centro
+        }
+    }
+
+    // El h1 dentro del header (nombre del festival)
+    h1 {
+        color: v.$blanco;
+        text-align: center; // En móvil: título centrado
+
+        @include m.tablet {
+            text-align: left; // En tablet+: el título va a la izquierda
+            margin: 0;        // Quita el margen inferior que tiene h1 por _globales.scss
+        }
+    }
+}
+
+// Los tres links de navegación (Lineup, Galería, Boletos)
+.navegacion-principal {
+    display: flex;
+    flex-direction: column; // En móvil: links apilados verticalmente
+    align-items: center;    // Centrados horizontalmente
+    gap: 2rem;              // 20px de separación entre cada link
+
+    @include m.tablet {
+        flex-direction: row; // En tablet+: links en fila horizontal
+    }
+
+    a {
+        color: v.$blanco;
+        font-size: 2.4rem; // 24px
+
+        // "&:hover" → cuando el cursor pasa por encima del link
+        // "&.active" → clase que agrega JavaScript para marcar el link de la sección visible
+        // La coma separa selectores: los mismos estilos aplican a ambos estados
+        &:hover,
+        &.active {
+            color: v.$amarillo; // El link activo o en hover cambia a color amarillo
+        }
+    }
+}

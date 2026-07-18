@@ -1,0 +1,89 @@
+// ============================================================
+// base/_mixins.scss — Mixins reutilizables del proyecto
+// ============================================================
+// Un mixin es como una "función de CSS": agrupa propiedades que
+// se repiten en varios lugares y las insertas con @include.
+//
+// SINTAXIS DE USO en otro archivo:
+//   @use 'base/mixins' as m;       → importa este archivo con alias "m"
+//   @include m.tablet { ... }      → usa el mixin dentro de un selector
+//
+// Sin mixins tendrías que escribir la misma media query en cada archivo.
+// Con mixins, si cambias el breakpoint en _variables.scss, se actualiza en todo.
+// ============================================================
+
+@use 'variables' as v;
+// @use importa otro módulo SCSS.
+// "as v" crea el alias "v" para acceder a las variables como v.$tablet, v.$desktop, etc.
+// Esto evita conflictos si dos módulos tuvieran variables con el mismo nombre.
+
+// ─── MIXINS DE MEDIA QUERIES (RESPONSIVE DESIGN) ─────────────
+// Estos mixins encapsulan las media queries del proyecto.
+// Uso: @include m.tablet { color: red; }
+// Resultado compilado en CSS: @media(min-width: 768px) { color: red; }
+//
+// @content es el marcador especial donde se inserta el CSS que
+// escribiste dentro de las llaves al llamar el mixin.
+
+@mixin telefono {
+    @media(min-width: v.$telefono) {  // A partir de 480px de ancho
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media(min-width: v.$tablet) {    // A partir de 768px de ancho
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media(min-width: v.$desktop) {   // A partir de 1200px de ancho
+        @content;
+    }
+}
+
+@mixin desktopXL {
+    @media(min-width: v.$desktopXL) { // A partir de 1400px de ancho
+        @content;
+    }
+}
+
+// ─── MIXIN: contenedor ───────────────────────────────────────
+// Centra un elemento y limita su ancho máximo.
+// Replica el comportamiento de la clase .contenedor de _globales.scss
+// pero como mixin para cuando no puedes o no quieres modificar el HTML.
+// Uso: @include m.contenedor;
+@mixin contenedor {
+    width: 95%;        // Ocupa el 95% del ancho disponible (deja margen en los bordes)
+    max-width: 120rem; // Máximo 1200px: el contenido no se extiende más que esto
+    margin: 0 auto;    // Margen automático a izquierda y derecha → centra el bloque
+}
+
+// ─── MIXIN: grid ─────────────────────────────────────────────
+// Crea una cuadrícula CSS Grid con columnas iguales.
+// Parámetros:
+//   $columnas → número de columnas iguales a crear
+//   $gap      → espacio entre columnas y filas (acepta cualquier unidad CSS)
+//
+// Uso: @include m.grid(3, 2rem);
+// Resultado: 3 columnas iguales con 20px de separación entre ellas
+@mixin grid($columnas, $gap) {
+    display: grid;
+    grid-template-columns: repeat($columnas, 1fr);
+    // repeat($columnas, 1fr): crea $columnas columnas de ancho igual.
+    // "1fr" = 1 fracción del espacio disponible.
+    // Si hay 3 columnas, cada una ocupa 1/3 del espacio total.
+    gap: $gap; // Espacio entre todas las celdas del grid (columnas y filas)
+}
+
+// ─── MIXIN: resetear-lista ────────────────────────────────────
+// Elimina los estilos que los navegadores aplican a <ul> y <ol> por defecto:
+// el punto (viñeta), el número, el margen y el padding.
+// Sin esto, las listas tendrían sangría y viñetas automáticas no deseadas.
+// Uso: @include m.resetear-lista();
+@mixin resetear-lista {
+    margin: 0;
+    padding: 0;
+    list-style: none; // Quita las viñetas (•) o números de la lista
+}

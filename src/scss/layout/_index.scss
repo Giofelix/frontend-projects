@@ -1,0 +1,18 @@
+// ============================================================
+// layout/_index.scss — Índice del módulo "layout"
+// ============================================================
+// Archivo de barril: agrupa y re-exporta los estilos de cada
+// sección visual de la página.
+//
+// Cuando app.scss hace @forward 'layout', recibe automáticamente
+// todo lo que está listado aquí.
+// El orden refleja el orden visual de las secciones en el HTML.
+// ============================================================
+
+@forward 'header';   // Barra de navegación superior (se fija al hacer scroll)
+@forward 'video';    // Hero con video de fondo y texto encima
+@forward 'festival'; // Sección "Sobre el festival" (imagen + texto en dos columnas)
+@forward 'lineup';   // Cartelera de artistas por día y escenario
+@forward 'galeria';  // Galería de fotos con lightbox modal
+@forward 'boletos';  // Tarjetas de precios de pases
+@forward 'footer';   // Pie de página
