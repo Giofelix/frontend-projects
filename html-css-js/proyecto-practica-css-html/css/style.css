@@ -1,0 +1,328 @@
+:root {
+    --color1: #ffffff;
+    --color2: #f5c077;
+    --color3: #1E90FF;
+    --color4: #000000;
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+/*Mantiene las medidas de tamaño del elemento*/
+*,
+*before,
+*after {
+    box-sizing: inherit;
+}
+
+body {
+    font-size: 16px;
+    font-family: "Domine", serif;
+    background-image: linear-gradient(to top, var(--color3) 0%, var(--color1) 100%);
+}
+
+/*
+Con los bloques anteriores, la medida rem se vuelve más fácil de manejar, ya que 1rem equivale a 10px, lo que facilita el cálculo de tamaños relativos en el diseño web. Por ejemplo, si quieres que un elemento tenga un tamaño de 20px, puedes simplemente usar 2rem (20px / 10px = 2rem). Esto mejora la legibilidad y la escalabilidad del diseño, especialmente en dispositivos con diferentes resoluciones y tamaños de pantalla.
+*/
+
+/*ESTILOS DE TEXTOS*/
+
+h1 {
+    font-size: 4rem;
+}
+
+h2 {
+
+    font-size: 3rem;
+
+}
+
+h3 {
+    font-size: 2.5rem;
+}
+
+h1,
+h2,
+h3 {
+    text-align: center;
+}
+
+/*ESTILO BOTONES*/
+.boton {
+
+    text-decoration: none;
+    padding: 1rem;
+    background-color: var(--color2);
+    border-radius: 5px;
+    border: none;
+    color: var(--color1);
+    text-transform: uppercase;
+    margin-top: 2rem;
+    font-weight: bold;
+    box-shadow: 2px 2px 2px 2px #000000;
+
+}
+
+.boton:hover {
+    cursor: pointer;
+    background-color: var(--color1);
+    color: var(--color4);
+    box-shadow: none;
+}
+
+/*ESTILOS SOMBRAS*/
+
+.sombra {
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    background-color: var(--color1);
+    padding: 2rem;
+    border-radius: 2px;
+}
+
+.contenedor {
+
+    max-width: 120rem;
+    margin: 0 auto;
+
+}
+
+.nav-bg {
+
+    background-color: var(--color2);
+
+}
+
+.navegacion-principal {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+@media (max-width: 480px) {
+
+    .navegacion-principal {
+
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .enviar .boton {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .formulario {
+        width: auto;
+    }
+
+    .navegacion-principal a:hover{
+        width: 100%;
+        text-align: center;
+        background-color: var(--color1);
+        color: var(--color4);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .navegacion_principal {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+@media(min-width:728px) {
+
+    .contenedor-campos {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto auto auto 20rem;
+        column-gap: 1rem;
+    }
+
+    .campo:nth-child(5),
+    .campo:nth-child(6) {
+        grid-column: 3/1;
+    }
+}
+
+.navegacion-principal a {
+
+    color: var(--color1);
+    text-decoration: none;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 1rem;
+
+}
+
+.navegacion-principal a:hover {
+    background-color: var(--color1);
+    color: var(--color4);
+}
+
+.contenido-hero h2 {
+    color: var(--color1);
+}
+
+span {
+    font-size: 2rem;
+
+}
+
+
+
+.hero {
+    background-image: url('/img/fondo.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 450px;
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.contenido-hero {
+
+    position: absolute;
+    background-color: rgb(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    /* El siguiente bloque de codigo sirve para centrar el contenido del hero verical y horizontalmente */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.contenido-hero h2,
+.contenido-hero p {
+    color: var(--color1);
+    font-size: 2rem;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.services p {
+
+    font-size: 1.5rem;
+    line-height: 2;
+
+}
+
+.services h3 {
+    font-weight: bold;
+    color: var(--color3);
+}
+
+@media (min-width: 768px) {
+    .services {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        /*sintaxis de grid-template-rows y grid-template-columns*/
+        column-gap: 1.5rem;
+    }
+
+}
+
+svg {
+    width: 4rem;
+    height: 4rem;
+}
+
+.service {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.service .iconos {
+    height: 12rem;
+    width: 12rem;
+    background-color: var(--color2);
+    border-radius: 50%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+
+}
+
+.formulario {
+
+    background-color: var(--color3);
+    border-radius: 5px;
+    width: min(60rem, 90%);
+    margin: auto;
+    padding: 2rem;
+
+}
+
+.formulario fieldset {
+    border-color: var(--color4);
+}
+
+.formulario legend {
+
+    text-align: center;
+    font-size: 2rem;
+    text-transform: uppercase;
+    padding: 0px 5px;
+    margin-bottom: 2rem;
+
+}
+
+.campo label {
+    color: var(--color1);
+    font-weight: bold;
+    margin: 2rem .5rem 0.5rem;
+    display: block;
+
+}
+
+.input-text {
+    width: 100%;
+    border: none;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+}
+
+.message{
+    min-height: 15rem;
+    max-height: 15rem;
+}
+
+.enviar {
+    display: flex;
+    justify-content: end;
+}
+
+.footer{
+    background-color: var(--color2);
+    margin: 1.5rem 1rem;
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+}
+
+.imagen-footer{
+    width: 3rem;
+    padding-right: 1rem;
+}
+
+.contenedor-footer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: capitalize;
+}
+
+
+
