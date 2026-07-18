@@ -1,69 +1,22 @@
-# Festival de Música
+# Frontend Projects
 
-Landing page estática para un festival de música electrónica/techno. Construida con HTML, SCSS y JavaScript vanilla, sin frameworks ni bundlers.
+Repositorio de proyectos de práctica de desarrollo frontend. Cada carpeta de nivel superior agrupa proyectos por stack tecnológico, y cada proyecto vive en su propia carpeta con su propio README (instalación, uso y estructura).
 
-## Secciones
+## Proyectos
 
-- Header con navegación fija al hacer scroll
-- Video de presentación
-- Sobre el festival
-- Line-up de artistas
-- Galería de imágenes con modal (lightbox)
-- Boletos
-- Footer
+| Proyecto | Descripción | Stack | Carpeta |
+|---|---|---|---|
+| Festival de Música | Landing page estática para un festival de música electrónica/techno, con galería con lightbox y video de presentación | HTML, SCSS, JavaScript vanilla, Gulp | [html-css-sass-js/proyecto-techno-music](./html-css-sass-js/proyecto-techno-music) |
 
-## Requisitos
-
-- [Node.js](https://nodejs.org/) y npm
-
-## Instalación
-
-```bash
-npm install
-```
-
-## Uso
-
-```bash
-# Compilar SCSS a CSS en modo watch (sass CLI puro)
-npm run sass
-
-# Compilar CSS una sola vez (vía Gulp)
-npm run css
-
-# Modo desarrollo: watch de SCSS y JS vía Gulp
-npm run dev
-
-# Pipeline completo: copiar JS, compilar CSS y watch
-npm run allTools
-```
-
-El CSS compilado se genera en `build/css/app.css`. `index.html` carga ese archivo junto con `src/js/app.js`.
-
-## Estructura del proyecto
+## Cómo está organizado
 
 ```
-├── index.html
-├── src/
-│   ├── scss/
-│   │   ├── app.scss        # raíz SCSS
-│   │   ├── base/           # variables, mixins y estilos globales
-│   │   └── layout/         # una hoja de estilos por sección
-│   ├── js/
-│   │   └── app.js          # toda la lógica de JS (sin módulos)
-│   └── img/                # imágenes del sitio y galería
-├── video/                  # video de presentación (mp4/ogv/webm)
-├── build/                  # salida compilada (generada, no versionada)
-└── gulpfile.js
+frontend-projects/
+├── README.md                      ← este índice
+├── html-css-sass-js/              ← proyectos con HTML/CSS/SCSS/JS vanilla
+│   └── proyecto-techno-music/
+├── react/                         ← (futuro) proyectos con React
+├── vue/                           ← (futuro) proyectos con Vue
 ```
 
-## Tecnologías
-
-- HTML5
-- SCSS (metodología mobile-first con mixins responsive)
-- JavaScript (vanilla, sin módulos)
-- Gulp + Sass
-
-## Licencia
-
-ISC
+Cada proyecto es independiente: tiene su propio `package.json`, dependencias y README con instrucciones específicas de instalación y uso.
