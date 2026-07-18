@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Compiled output (generated via npm run css / npm run dev / npm run allTools)
+build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+
+# Env files
+.env
+.env.local
